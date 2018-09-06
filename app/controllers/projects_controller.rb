@@ -2,12 +2,12 @@ class ProjectsController < ApplicationController
 
   # GET: /projects
   get "/projects" do
-    erb :"/projects/index.html"
+    erb :"/projects/index"
   end
 
   # GET: /projects/new
   get "/projects/new" do
-    erb :"/projects/new.html"
+    erb :"/projects/new"
   end
 
   # POST: /projects
@@ -17,12 +17,12 @@ class ProjectsController < ApplicationController
 
   # GET: /projects/5
   get "/projects/:id" do
-    erb :"/projects/show.html"
+    erb :"/projects/show"
   end
 
   # GET: /projects/5/edit
   get "/projects/:id/edit" do
-    erb :"/projects/edit.html"
+    erb :"/projects/edit"
   end
 
   # PATCH: /projects/5

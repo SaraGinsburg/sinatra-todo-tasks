@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   validates :email, uniqueness: true
 
+  validates :username, presence: true
+  validates :username, uniqueness: true
+
   #make sure that email format is correct
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 end

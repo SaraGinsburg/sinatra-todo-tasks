@@ -1,8 +1,10 @@
+<% if flash[:message] %>
+  <h4><%= flash[:message] %></h4>
+<% end %>
+
 <h1>Users: </h1>
 <% @users.each do |user| %>
-  <h3><%= user.name %>'s projects: </h3>
-    <% user.projects.each do |project| %>
-      <%= project.project_name%><br>
-    <% end %>
+  <h3><%= user.name %></h3>
+    
   <br>
 <% end %>

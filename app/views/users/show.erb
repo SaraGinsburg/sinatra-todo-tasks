@@ -1,1 +1,13 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<h1><%= @user.name %>'s projects:</h1>
+    <% @user.projects.each do |project| %>
+      <h3><%= project.project_name%></h3>
+        <% project.tasks.each do |task| %>
+        <h5><%= task.task_name%><br></h5>
+        <%= task.description%><br>
+        Start date: <%= task.start_date%>
+        End date: <%= task.end_date%></td>
+        <br><br>
+
+      <% end %>
+      <br><br>
+  <% end %>

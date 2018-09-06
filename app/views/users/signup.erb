@@ -1,5 +1,9 @@
+<% if flash[:message] %>
+  <h2><%= flash[:message] %></h2>
+<% end %>
 <h1>New User Signup form: </h1>
-<form action="/users" method="post">
+
+<form action="/signup" method="post">
   <label for="name">name:     </label>
   <input type="string" name="name" id="name" ></input><br>
 
