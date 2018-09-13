@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   get '/login' do
     if logged_in?
-      flash[:message] = "you are already logged in"
+      flash[:message] = "You are already logged in as #{@current_user.name}"
       redirect "/projects/show"
     else
       erb :'users/login'
@@ -38,11 +38,9 @@ class UsersController < ApplicationController
 
   post '/login' do
     if  logged_in?
-
       redirect to "/login"
     else
       user = User.find_by(:username => params[:username])
-
       if user && user.authenticate(params[:password])
         session[:user_id] = user.id
         redirect "/projects/show"
@@ -55,7 +53,7 @@ class UsersController < ApplicationController
 
   get '/logout' do
     session.clear
-    redirect "/login"
+    redirect "/"
   end
 
   get "/users" do
@@ -63,10 +61,10 @@ class UsersController < ApplicationController
     erb :"/users/index"
   end
 
-  # GET: /users/5
-  get "/users/:id" do
 
+  get "/users/:id" do
     @user = User.find_by(id: params[:id])
+
     if @user && session[:user_id] == params[:id].to_i
       erb :'/users/show'
     else
@@ -74,15 +72,32 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET: /users/5/edit
   get "/users/:id/edit" do
-    erb :"/users/edit"
-  end
+      @user = User.find_by(id: params[:id])
+      if @user && session[:user_id] == params[:id].to_i
+        erb :'/users/edit'
+      else
+        flash[:message] = "You are attempting to modify a user different than yourself. This is not allowed!"
+        session.clear
+        redirect '/login'
+      end
+    end
 
-  # PATCH: /users/5
-  patch "/users/:id" do
-    redirect "/users/:id"
-  end
+    patch "/users/:id" do
 
+      @user = User.find_by(:id => params[:id])
+      if @user && @user == current_user
+        @user.update(:name => params[:name], :username => params[:username],:email => params[:email])
+        redirect "/users/#{params[:id]}"
+      else
+        session.clear
+        redirect '/login'
+      end
+    end
+  #
+  # # DELETE: /users/5/delete
+  # delete "/users/:id/delete" do
+  #   redirect "/users"
+  # end
 
 end

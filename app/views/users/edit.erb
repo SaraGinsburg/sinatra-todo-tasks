@@ -1,1 +1,21 @@
-<h1>Insert the form to edit an instance of your model here.</h1>
+
+<% if flash[:message] %>
+  <h2><%= flash[:message] %></h2>
+<% end %>
+<h1>Edit user: </h1>
+
+<form action="/users/<%= @user.id %>" method="post">
+  <input id="hidden" name="_method" value="patch" type="hidden">
+  <label for="name">name:     </label>
+  <input type="string" name="name" id="name" value="<%=@user.name%>"></input><br>
+
+  <label for username>username: </label>
+  <input type="string" name="username" id="username"  value="<%=@user.username%>"></input><br>
+
+  <label for email>email: </label>
+  <input type="string" name="email" id="email"  value="<%=@user.email%>"></input><br>
+
+  <input type="submit" value="Save">
+
+
+</form>
