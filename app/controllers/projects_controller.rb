@@ -3,6 +3,7 @@ class ProjectsController < ApplicationController
   # GET: /projects
   get "/projects" do
     authorize_user
+
     @projects = Project.all
     erb :"/projects/index"
   end
@@ -31,9 +32,11 @@ class ProjectsController < ApplicationController
   get "/projects/:id/edit" do
     authorize_user
     @project = Project.find_by(:id => params[:id])
-    if @project && @project.user.id = session[:user_id]
+
+    if @project && @project.user.id == session[:user_id]
       erb :"/projects/edit"
     else
+      flash[:message] = "Only a logged in user can modify a project"
       redirect "/projects"
     end
   end
@@ -42,21 +45,20 @@ class ProjectsController < ApplicationController
 
   patch "/projects/:id" do
     authorize_user
-    binding.pry
     @project = Project.find_by(:id => params[:id])
-    if @project && @project.user.id = session[:user_id]
+    if @project && @project.user.id == session[:user_id]
 
-      @project.update(params["project"])
-      # check if any tasks were added, similar to
-    #   if !params["pet"]["name"].empty?
-    #   @owner.pets << Pet.create(name: params["pet"]["name"])
-    # end
+      @project.update(:project_name => params[:project_name]) unless params[:project_name].nil?
 
-    # redirect "/projects/:id"
+      if !params[:task_name].empty?
+        @project.tasks << Task.create(task_name: params[:task_name],
+        description: params[:description], start_date: params[:start_date],
+        end_date: params[:end_date])
+      end
     else
-      redirect "/projects"
+      flash[:message] = "Only a logged in user can modify a project"
     end
-
+    redirect "/projects"
 
   end
 
