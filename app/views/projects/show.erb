@@ -1,4 +1,19 @@
 <% if flash[:message] %>
   <h2><%= flash[:message] %></h2>
 <% end %>
-<h1>This is the show page for an individual instance of your model.</h1>
+
+<h1><%= @project.project_name %></h1>
+<h2>Tasks:</h2>
+    <% @project.tasks.each do |task| %>
+        <% if task.completed %>
+          <h5 style="text-decoration: line-through;"><%= task.task_name%><br></h5>
+        <% else %>
+          <h5><%= task.task_name%><br></h5>
+        <% end %>
+        <%= task.description%><br>
+        Start date: <%= task.start_date%>
+        End date: <%= task.end_date%></td>
+        <br><br>
+
+    <% end %>
+      <br><br>

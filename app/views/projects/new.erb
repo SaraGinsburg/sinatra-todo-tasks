@@ -1,1 +1,7 @@
-<h1>Insert the form to create a new instance of your model.</h1>
+
+<h1><%= @user.name %>'s new project: </h1>
+<form method="post"  action="/projects">
+  <label for="project_name">Project Name: </label>
+  <input type="string" name="project_name" id="project_name"></input>
+  <input type="submit" value="Save">
+</form>

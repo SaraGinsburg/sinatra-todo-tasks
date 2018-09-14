@@ -1,1 +1,38 @@
-<h1>Insert the form to edit an instance of your model here.</h1>
+
+<h1><%= User.find_by(:id => session[:user_id]).name %>'s project #<%= @project.id %></h1>
+
+<form action="/projects/<%= session[:user_id]%>" method="post">
+  <input id="hidden" name="_method" value="patch" type="hidden">
+
+  <h2><label for="project_name">Project Name: </label>
+  <input type="string" name="project_name" id="project_name" value="<%= @project.project_name %>"></input></h2>
+  <br>
+
+  <% @project.tasks.each do |task| %>
+      <% if task.completed %>
+        <h3 style="text-decoration: line-through;"><%= task.task_name%></h3>
+        <br>
+      <% else %>
+      <!--is it necessary to assign name = "task.task_name" ? -->
+        <h3>Task: <input type="string" name="task_name" value="<%= task.task_name%>"></h3>
+      <% end %>
+
+      <label>Description: </label>
+      <!-- <input type="textarea" name="description" value="<%= task.description %>"<br><br> -->
+      <textarea id="description" cols="90" rows="1" ><%=task.description%></textarea>
+      <br>
+      <label>Start Date: </label>
+      <input type="date" name="start_date" value="<%= task.start_date%>">
+      <label>End Date: </label>
+      <input type="date" name="end_date" value="<%= task.end_date%>">
+      <label>Completed : </label>
+      <input type="boolean" name="completed" value="<%= task.completed%>">
+
+      <br><br>
+
+  <% end %>
+    <br><br>
+</form>
+<!--show the project, and its tasks,
+allow modifying and adding tasks,
+extra: show completed task separate than the rest-->

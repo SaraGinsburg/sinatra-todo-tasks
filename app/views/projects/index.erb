@@ -1,1 +1,11 @@
-<h1>This is the Model's index page.</h1>
+<h1>All Projects</h1>
+
+<% @projects.each do |project| %>
+<h4>
+  <a href="/projects/<%= project.id %>"><%= project.id %>. <%= project.project_name%></a>
+</h4>
+<p>
+  Person In Charge: <a href="/users/<%= project.user_id %>"><%= project.user.name %></a>
+</p>
+<br>
+<% end %>

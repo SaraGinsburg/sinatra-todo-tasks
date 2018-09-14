@@ -40,6 +40,7 @@ class UsersController < ApplicationController
     if  logged_in?
       redirect to "/login"
     else
+      
       user = User.find_by(:username => params[:username])
       if user && user.authenticate(params[:password])
         session[:user_id] = user.id
@@ -94,10 +95,5 @@ class UsersController < ApplicationController
         redirect '/login'
       end
     end
-  #
-  # # DELETE: /users/5/delete
-  # delete "/users/:id/delete" do
-  #   redirect "/users"
-  # end
 
 end
