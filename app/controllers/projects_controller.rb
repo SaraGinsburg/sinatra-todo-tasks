@@ -39,8 +39,25 @@ class ProjectsController < ApplicationController
   end
 
   # PATCH: /projects/5
+
   patch "/projects/:id" do
-    redirect "/projects/:id"
+    authorize_user
+    binding.pry
+    @project = Project.find_by(:id => params[:id])
+    if @project && @project.user.id = session[:user_id]
+
+      @project.update(params["project"])
+      # check if any tasks were added, similar to
+    #   if !params["pet"]["name"].empty?
+    #   @owner.pets << Pet.create(name: params["pet"]["name"])
+    # end
+
+    # redirect "/projects/:id"
+    else
+      redirect "/projects"
+    end
+
+
   end
 
   # DELETE: /projects/5/delete

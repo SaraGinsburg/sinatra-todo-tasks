@@ -1,38 +1,51 @@
 
 <h1><%= User.find_by(:id => session[:user_id]).name %>'s project #<%= @project.id %></h1>
 
-<form action="/projects/<%= session[:user_id]%>" method="post">
+<form action="/projects/<%= @project.id %>" method="post">
   <input id="hidden" name="_method" value="patch" type="hidden">
 
-  <h2><label for="project_name">Project Name: </label>
+  <h2><label>Project Name: </label>
   <input type="string" name="project_name" id="project_name" value="<%= @project.project_name %>"></input></h2>
   <br>
 
-  <% @project.tasks.each do |task| %>
-      <% if task.completed %>
-        <h3 style="text-decoration: line-through;"><%= task.task_name%></h3>
-        <br>
-      <% else %>
-      <!--is it necessary to assign name = "task.task_name" ? -->
-        <h3>Task: <input type="string" name="task_name" value="<%= task.task_name%>"></h3>
-      <% end %>
+  <ul>
 
-      <label>Description: </label>
-      <!-- <input type="textarea" name="description" value="<%= task.description %>"<br><br> -->
-      <textarea id="description" cols="90" rows="1" ><%=task.description%></textarea>
-      <br>
-      <label>Start Date: </label>
-      <input type="date" name="start_date" value="<%= task.start_date%>">
-      <label>End Date: </label>
-      <input type="date" name="end_date" value="<%= task.end_date%>">
-      <label>Completed : </label>
-      <input type="boolean" name="completed" value="<%= task.completed%>">
-
+    <h3>Please click on the task you wish to modify:  </h3>
+    <% @project.tasks.each do |task| %>
+      <li><h4><a href="/tasks/<%= task.id %>"><%= task.task_name %></a></h4>
+        <%= task.description unless task.description.nil?%><br>
+        <%= task.start_date unless task.start_date.nil?%>
+        <%= task.end_date unless task.end_date.nil?%>
+        <%= task.completed unless  task.completed.nil? %>
+      </li>
       <br><br>
+    <% end %>
+  </ul>
 
-  <% end %>
-    <br><br>
+  <h3>and/or, create a new task:</h3>
+
+    <label>Task name:</label>
+    <input  type="text" name="task_name" ></input><br>
+
+    <label>Description: </label>
+    <!-- <input type="textarea" name="description" <br><br> -->
+    <textarea id="description" name="description" cols="90" rows="1" ></textarea><br>
+
+
+    <label>Start Date:</label>
+    <input  type="date" name="start_date" ></input>
+
+    <label>End Date:</label>
+    <input  type="date" name="end_date" ></input>
+
+    <label>Completed (true/false) :</label>
+    <input  type="text" name="completed" ></input><br><br>
+
+
+    <input type="submit" value="Update Project">
 </form>
-<!--show the project, and its tasks,
+
+
+<!--TODO show the project, and its tasks,
 allow modifying and adding tasks,
 extra: show completed task separate than the rest-->
