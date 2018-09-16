@@ -24,7 +24,7 @@ class ProjectsController < ApplicationController
   # GET: /projects/5
   get "/projects/:id" do
     authorize_user
-    @project = Project.find_by(:id => params[:id])
+    @project = Project.find_by(:id => params[:id].to_i)
     erb :"/projects/show"
   end
 
@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
 
   patch "/projects/:id" do
     authorize_user
-    @project = Project.find_by(:id => params[:id])
+    @project = Project.find_by(:id => params[:id].to_i)
     if @project && @project.user.id == session[:user_id]
 
       @project.update(:project_name => params[:project_name]) unless params[:project_name].nil?
@@ -54,8 +54,11 @@ class ProjectsController < ApplicationController
         @project.tasks << Task.create(task_name: params[:task_name],
         description: params[:description], start_date: params[:start_date],
         end_date: params[:end_date])
+        erb :"/projects/edit"
+      else
+        @project = Project.find_by(:id => params[:id].to_i)
+        erb :"/projects/show"
       end
-      erb :"/projects/edit"
     else
       flash[:message] = "Only a logged in user can modify a project"
       redirect "/projects"
