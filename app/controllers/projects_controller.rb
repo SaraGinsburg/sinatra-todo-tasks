@@ -3,7 +3,6 @@ class ProjectsController < ApplicationController
   # GET: /projects
   get "/projects" do
     authorize_user
-
     @projects = Project.all
     erb :"/projects/index"
   end
@@ -67,6 +66,7 @@ class ProjectsController < ApplicationController
   end
 
   # DELETE: /projects/5/delete
+# TODO build the delete option
   delete "/projects/:id/delete" do
     redirect "/projects"
   end

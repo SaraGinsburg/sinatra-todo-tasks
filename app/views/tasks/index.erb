@@ -1,1 +1,19 @@
-<h1>This is the Model's index page.</h1>
+<% if flash[:message] %>
+  <h2><%= flash[:message] %></h2>
+<% end %>
+
+<h1>All <%= @user.name %>'s Tasks</h1>
+
+<% @projects.each do |project| %>
+  <h2><%= project.project_name%></h2>
+  <% project.tasks.each do |task|%>
+    <h4><a href="/tasks/<%= task.id %>"><%= task.id %>. <%= task.task_name%></a></h4>
+    <p>
+      Description: <%= task.description %><br>
+      Start Date: <%= task.start_date %>
+      End Date: <%= task.end_date %><br>
+      <%= 'Completed' if task.completed == true %><br>
+    </p>
+  <% end %>
+  <br>
+<% end %>
