@@ -55,10 +55,11 @@ class ProjectsController < ApplicationController
         description: params[:description], start_date: params[:start_date],
         end_date: params[:end_date])
       end
+      erb :"/projects/edit"
     else
       flash[:message] = "Only a logged in user can modify a project"
+      redirect "/projects"
     end
-    redirect "/projects"
 
   end
 
