@@ -1,1 +1,11 @@
-<h1>Insert the form to create a new instance of your model.</h1>
+<h1><%= @user.name %>, </h1>
+  <h4>Please select a project to which a new task should be added: </h4>
+<br>
+
+<form method="post" action="/register">
+  <%@projects.each do |project|%>
+    <input type="radio" name="selected" value="<%=project.id%>" >  <%=  project.project_name%><br>
+  <% end %>
+  <br><br>
+  <input type="submit" value="Add task to selected project">
+</form>

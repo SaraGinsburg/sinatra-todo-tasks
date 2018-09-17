@@ -1,1 +1,27 @@
-<h1>Insert the form to edit an instance of your model here.</h1>
+<h1><%= @task.task_name %></h1>
+<form action="/tasks/<%= @task.id %>" method="post">
+  <input id="hidden" name="_method" value="patch" type="hidden">
+
+  <label>Description: </label>
+  <!-- <input type="textarea" name="description" <br><br> -->
+  <textarea id="description" name="description" cols="90" rows="1"  ><%= @task.description%></textarea><br>
+
+
+  <label>Start Date:</label>
+  <input  type="date" name="start_date" value="<%= @task.start_date%>"></input>
+
+  <label>End Date:</label>
+  <input  type="date" name="end_date" value="<%= @task.end_date %>"></input>
+
+  <label>Completed (true/false) :</label>
+  <input  type="text" name="completed" value="<%= @task.completed%>"></input><br><br>
+
+
+  <input type="submit" value="Exit / Update Task">
+</form>
+
+
+<form action="/tasks/<%= @task.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="submit" name="" value="Delete this task">
+</form>

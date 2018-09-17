@@ -13,36 +13,66 @@ class TasksController < ApplicationController
   get "/tasks/new" do
     authorize_user
     @user = User.find_by(:id => session[:user_id])
-    # TODO allow a check box to choose for which project is this task created
+    @projects = @user.projects
+
     erb :"/tasks/new"
+
   end
 
-  # POST: /tasks
-  post "/tasks" do
-    # TODO Task.create ....
-    redirect "/tasks"
+  post '/register' do
+    redirect to "/projects/#{params[:selected]}/edit"
   end
+
 
   # GET: /tasks/5
   get "/tasks/:id" do
     authorize_user
-    # TODO @task = Task.find_by.....
-    erb :"/tasks/show"
+    @task = Task.find_by(:id => params[:id])
+    if @task && @task.project.user.id == session[:user_id]
+      erb :"/tasks/show"
+    else
+      flash[:message] = "A user can view only his own tasks"
+      redirect "/projects"
+    end
   end
 
   # GET: /tasks/5/edit
   get "/tasks/:id/edit" do
-    erb :"/tasks/edit"
+    authorize_user
+    @task = Task.find_by(:id => params[:id])
+    if @task && @task.project.user.id == session[:user_id]
+      erb :"/tasks/edit"
+    else
+      flash[:message] = "A user can modify only his own tasks"
+      redirect "/tasks"
+    end
   end
 
   # PATCH: /tasks/5
   patch "/tasks/:id" do
-    redirect "/tasks/:id"
+    authorize_user
+    @task = Task.find_by(:id => params[:id].to_i)
+    if @task && @task.project.user.id == session[:user_id]
+      @task.update(:description => params[:description],:start_date => params[:start_date],:end_date => params[:end_date], :completed => params[:completed] )
+    else
+      flash[:message] = "Only a logged in user can modify a project"
+    end
+    redirect "/tasks"
   end
 
   # DELETE: /tasks/5/delete
-  delete "/tasks/:id/delete" do
-    # TODO build the delete option
-    redirect "/tasks"
+  delete "/tasks/:id" do
+
+    @task = Task.find_by(id: params[:id].to_i)
+    if @task.project.user.id == session[:user_id] && @task.destroy
+      flash[:message] = "#{@task.task_name} successfully deleted."
+      redirect "/tasks"
+    else
+      flash[:message] = "You don't have the authority to delete #{@task.task_name}."
+    end
+
+    redirect "/projects"
   end
+
+
 end

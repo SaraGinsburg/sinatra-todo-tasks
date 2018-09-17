@@ -16,6 +16,7 @@ class ProjectsController < ApplicationController
 
   # POST: /projects
   post "/projects" do
+
     Project.create(:user_id => session[:user_id], :project_name => params[:project_name])
     redirect "/projects"
   end
@@ -23,19 +24,20 @@ class ProjectsController < ApplicationController
   # GET: /projects/5
   get "/projects/:id" do
     authorize_user
-    @project = Project.find_by(:id => params[:id].to_i)
+    @project = Project.find_by(:id => params[:id])
     erb :"/projects/show"
   end
 
   # GET: /projects/5/edit
   get "/projects/:id/edit" do
+
     authorize_user
     @project = Project.find_by(:id => params[:id])
 
     if @project && @project.user.id == session[:user_id]
       erb :"/projects/edit"
     else
-      flash[:message] = "Only a logged in user can modify a project"
+      flash[:message] = "A user can modify only his own projects"
       redirect "/projects"
     end
   end
@@ -66,8 +68,14 @@ class ProjectsController < ApplicationController
   end
 
   # DELETE: /projects/5/delete
-# TODO build the delete option
-  delete "/projects/:id/delete" do
+
+  delete "/projects/:id" do
+    @project = Project.find_by(id: params[:id].to_i)
+    if @project.user.id == session[:user_id] && @project.destroy
+      flash[:message] = "#{@project.project_name} successfully deleted."
+    else
+      flash[:message] = "You don't have the authority to delete #{@project.project_name}."
+    end
     redirect "/projects"
   end
 end

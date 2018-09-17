@@ -7,7 +7,7 @@
 <% @projects.each do |project| %>
   <h2><%= project.project_name%></h2>
   <% project.tasks.each do |task|%>
-    <h4><a href="/tasks/<%= task.id %>"><%= task.id %>. <%= task.task_name%></a></h4>
+    <h4><a href="/tasks/<%= task.id %>/edit"><%= task.id %>. <%= task.task_name%></a></h4>
     <p>
       Description: <%= task.description %><br>
       Start Date: <%= task.start_date %>

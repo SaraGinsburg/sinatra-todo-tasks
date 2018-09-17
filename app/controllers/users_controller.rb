@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   get '/login' do
     if logged_in?
       flash[:message] = "You are already logged in as #{@current_user.name}"
-      redirect "/projects/show"
+      erb :'/projects/show'
     else
       erb :'users/login'
     end
@@ -40,11 +40,12 @@ class UsersController < ApplicationController
     if  logged_in?
       redirect to "/login"
     else
-      
-      user = User.find_by(:username => params[:username])
-      if user && user.authenticate(params[:password])
-        session[:user_id] = user.id
-        redirect "/projects/show"
+
+      @user = User.find_by(:username => params[:username])
+      if @user && @user.authenticate(params[:password])
+        session[:user_id] = @user.id
+        @projects = @user.projects
+        erb  :"/projects/index"
       else
         flash[:message] = "login failed. please sign up"
         redirect "/signup"

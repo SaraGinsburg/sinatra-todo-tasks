@@ -1,1 +1,15 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<% if flash[:message] %>
+  <h2><%= flash[:message] %></h2>
+<% end %>
+
+
+<h3><%= @task.task_name%><br></h3><br>
+
+Description:
+<br><%= @task.description%><br><br>
+<%'Start date: ' if !!@task.start_date %> <%= @task.start_date%> <br>
+<% 'End date: ' if !!@task.end_date %>    <%= @task.end_date%><br>
+<% 'Completed' if !!@task.completed %>
+
+
+<br><br>

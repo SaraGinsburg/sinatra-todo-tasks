@@ -46,6 +46,7 @@
 </form>
 
 
-<!--TODO show the project, and its tasks,
-allow modifying and adding tasks,
-extra: show completed task separate than the rest-->
+<form action="/projects/<%= @project.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="submit" name="" value="Delete this project">
+</form>
