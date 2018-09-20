@@ -14,7 +14,8 @@ class UsersController < ApplicationController
   get '/login' do
     if logged_in?
       flash[:message] = "You are already logged in as #{@current_user.name}"
-      erb :'/projects/show'
+      @user = @current_user
+      erb :'/users/show'
     else
       erb :'users/login'
     end

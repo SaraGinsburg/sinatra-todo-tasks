@@ -7,7 +7,7 @@
 
 <% @projects.each do |project| %>
 <h4>
-  <a href="/projects/<%= project.id %>"><%= project.id %>. <%= project.project_name%></a>
+  <a href="/projects/<%= project.id %>/edit"><%= project.id %>. <%= project.project_name%></a>
 </h4>
 <p>
   Person In Charge: <a href="/users/<%= project.user_id %>"><%= project.user.name %></a>

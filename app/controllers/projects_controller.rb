@@ -25,7 +25,12 @@ class ProjectsController < ApplicationController
   get "/projects/:id" do
     authorize_user
     @project = Project.find_by(:id => params[:id])
-    erb :"/projects/show"
+    if @project && @project.user.id == session[:user_id]
+      erb :"/projects/show"
+    else
+      flash[:message] = "A user can view details of his own projects, only"
+      redirect "/projects"
+    end
   end
 
   # GET: /projects/5/edit

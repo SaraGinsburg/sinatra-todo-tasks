@@ -12,11 +12,10 @@
 
     <h3>Please click on the task you wish to modify:  </h3>
     <% @project.tasks.each do |task| %>
-      <li><h4><a href="/tasks/<%= task.id %>"><%= task.task_name %></a></h4>
+      <li><h4><a href="/tasks/<%= task.id %>/edit"><%= task.task_name %></a></h4>
         <%= task.description unless task.description.nil?%><br>
-        <%= task.start_date unless task.start_date.nil?%>
-        <%= task.end_date unless task.end_date.nil?%>
-        <%= task.completed unless  task.completed.nil? %>
+        <label>Start Date: </label><%= task.start_date unless task.start_date.nil?%><br>
+        <label>End Date: </label><%= task.end_date unless task.end_date.nil?%><br>
       </li>
       <br><br>
     <% end %>
