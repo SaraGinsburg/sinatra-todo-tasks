@@ -57,7 +57,7 @@ class TasksController < ApplicationController
     else
       flash[:message] = "Only a logged in user can modify a project"
     end
-    redirect "/tasks"
+    redirect "/projects/#{@task.project_id}/edit"
   end
 
   # DELETE: /tasks/5/delete
@@ -66,7 +66,7 @@ class TasksController < ApplicationController
     @task = Task.find_by(id: params[:id].to_i)
     if @task.project.user.id == session[:user_id] && @task.destroy
       flash[:message] = "#{@task.task_name} successfully deleted."
-      redirect "/tasks"
+      redirect "/projects/#{@task.project_id}/edit"
     else
       flash[:message] = "You don't have the authority to delete #{@task.task_name}."
     end

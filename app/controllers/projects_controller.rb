@@ -60,7 +60,7 @@ class ProjectsController < ApplicationController
         @project.tasks << Task.create(task_name: params[:task_name],
         description: params[:description], start_date: params[:start_date],
         end_date: params[:end_date])
-        erb :"/projects/edit"
+        redirect "/projects/#{params[:id]}/edit"
       else
         @project = Project.find_by(:id => params[:id].to_i)
         erb :"/projects/show"
