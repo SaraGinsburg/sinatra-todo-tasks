@@ -35,39 +35,27 @@ class ProjectsController < ApplicationController
 
   # GET: /projects/5/edit
   get "/projects/:id/edit" do
-
     authorize_user
-    @project = Project.find_by(:id => params[:id])
-
-    if @project && @project.user.id == session[:user_id]
-      erb :"/projects/edit"
-    else
-      flash[:message] = "A user can modify only his own projects"
-      redirect "/projects"
-    end
+    redirect_unless_authorized
+    erb :"/projects/edit"
   end
 
   # PATCH: /projects/5
 
   patch "/projects/:id" do
     authorize_user
-    @project = Project.find_by(:id => params[:id].to_i)
-    if @project && @project.user.id == session[:user_id]
+    redirect_unless_authorized
 
-      @project.update(:project_name => params[:project_name]) unless params[:project_name].nil?
+    @project.update(:project_name => params[:project_name]) unless params[:project_name].nil?
 
-      if !params[:task_name].empty?
-        @project.tasks << Task.create(task_name: params[:task_name],
-        description: params[:description], start_date: params[:start_date],
-        end_date: params[:end_date])
-        redirect "/projects/#{params[:id]}/edit"
-      else
-        @project = Project.find_by(:id => params[:id].to_i)
-        erb :"/projects/show"
-      end
+    if !params[:task_name].empty?
+      @project.tasks << Task.create(task_name: params[:task_name],
+      description: params[:description], start_date: params[:start_date],
+      end_date: params[:end_date])
+      redirect "/projects/#{params[:id]}/edit"
     else
-      flash[:message] = "Only a logged in user can modify a project"
-      redirect "/projects"
+      @project = Project.find_by(:id => params[:id].to_i)
+      erb :"/projects/show"
     end
 
   end
@@ -75,12 +63,13 @@ class ProjectsController < ApplicationController
   # DELETE: /projects/5/delete
 
   delete "/projects/:id" do
-    @project = Project.find_by(id: params[:id].to_i)
-    if @project.user.id == session[:user_id] && @project.destroy
+    authorize_user
+    redirect_unless_authorized
+    if  @project.destroy
       flash[:message] = "#{@project.project_name} successfully deleted."
-    else
-      flash[:message] = "You don't have the authority to delete #{@project.project_name}."
     end
     redirect "/projects"
   end
+
+  
 end

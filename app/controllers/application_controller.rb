@@ -27,5 +27,14 @@ class ApplicationController < Sinatra::Base
     def authorize_user
       redirect '/login' unless logged_in?
     end
+
+    def redirect_unless_authorized
+      @project = Project.find_by(id: params[:id].to_i)
+      if @project.user.id != session[:user_id]
+        flash[:message] = "A user must be logged in, and can modify or delete only his own projects"
+        redirect '/projects'
+      end
+    end
   end
+
 end
